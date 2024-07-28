@@ -1,3 +1,5 @@
+mod rot;
+
 use std::env;
 use std::fs;
 
@@ -11,14 +13,12 @@ fn main() {
     while i < args.len() {
         if get_input {
             if args[i] == "-f" || args[i] == "--file" {
-                if i + 1 < args.len() {
-                    let file_path = &args[i + 1];
-                    i += 1;
-                    let contents = fs::read_to_string(file_path);
-                    match contents {
+                if let Some(file_path) = args.get(i + 1) {
+                    match fs::read_to_string(file_path) {
                         Ok(content) => input = Some(content),
-                        Err(err) => panic!("File reading failed {}", err),
-                    };
+                        Err(err) => panic!("File reading failed: {}", err),
+                    }
+                    i += 1;
                 } else {
                     println!("No file provided!");
                 }
@@ -34,52 +34,14 @@ fn main() {
     }
 
     if program == "rot" {
-        match input {
-            Some(ref input_string) => {
-                for i in 0..26 {
-                    rot(i, input_string.to_string());
-                }
+        if let Some(ref input_string) = input {
+            for i in 0..26 {
+                rot::rot(i, input_string.to_string());
             }
-            None => {
-                for i in 0..26 {
-                    rot(i, "".to_string());
-                }
+        } else {
+            for i in 0..26 {
+                rot::rot(i, "".to_string());
             }
         }
     }
-}
-
-fn rot(rot_nro: u32, program_input: String) {
-    let mut input = "HelloThere";
-    if program_input != "" {
-        input = &program_input;
-    }
-    let mut output_string: Vec<String> = vec![];
-
-    for c in input.chars() {
-        let code = c as u32;
-        let new_char = char::from_u32(get_next_ascii_code(code, rot_nro));
-
-        match new_char {
-            Some(new_char) => {
-                output_string.push(new_char.to_string());
-            }
-            None => println!("Failed to create char from {}", c),
-        }
-    }
-    println!("Output with rot {}: {}", rot_nro, output_string.join(""));
-}
-
-fn get_next_ascii_code(original_code: u32, rot_nro: u32) -> u32 {
-    let new_code = original_code + rot_nro;
-    if original_code > 64 && original_code < 91 {
-        if new_code > 90 {
-            return new_code - 26;
-        }
-    } else {
-        if new_code > 122 {
-            return new_code - 26;
-        }
-    }
-    return new_code;
 }
