@@ -29,4 +29,6 @@ fn base(input: String) {
         i += 1;
     }
     println!("padded target: {}", raw_binary.join(""));
+
+    let joined_binary = raw_binary.join("");
 }
