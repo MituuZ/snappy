@@ -1,8 +1,10 @@
+mod base;
 mod rot;
 
 use std::env;
 use std::fs;
 
+use base::run_base;
 use rot::run_rot;
 
 fn main() {
@@ -41,5 +43,7 @@ fn main() {
 
     if program == "rot" {
         run_rot(&input);
+    } else if program == "base" {
+        run_base();
     }
 }
