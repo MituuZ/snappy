@@ -1,15 +1,30 @@
 use std::env;
+use std::fs;
 
 fn main() {
     let args: Vec<String> = env::args().collect();
     let mut program = "None";
-    let mut input = "";
+    let mut input: Option<String> = None;
 
     let mut i = 0;
     let mut get_input = false;
     while i < args.len() {
         if get_input {
-            input = &args[i];
+            if args[i] == "-f" || args[i] == "--file" {
+                if i + 1 < args.len() {
+                    let file_path = &args[i + 1];
+                    i += 1;
+                    let contents = fs::read_to_string(file_path);
+                    match contents {
+                        Ok(content) => input = Some(content),
+                        Err(err) => panic!("File reading failed {}", err),
+                    };
+                } else {
+                    println!("No file provided!");
+                }
+            } else {
+                input = Some(args[i].clone());
+            }
         }
         if args[i] == "-r" || args[i] == "--rot" {
             program = "rot";
@@ -19,11 +34,18 @@ fn main() {
     }
 
     if program == "rot" {
-        for i in 0..26 {
-            rot(i, input.to_string());
+        match input {
+            Some(ref input_string) => {
+                for i in 0..26 {
+                    rot(i, input_string.to_string());
+                }
+            }
+            None => {
+                for i in 0..26 {
+                    rot(i, "".to_string());
+                }
+            }
         }
-    } else {
-        println!("No valid program selected");
     }
 }
 
