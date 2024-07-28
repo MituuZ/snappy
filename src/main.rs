@@ -3,26 +3,35 @@ use std::env;
 fn main() {
     let args: Vec<String> = env::args().collect();
     let mut program = "None";
+    let mut input = "";
 
     let mut i = 0;
+    let mut get_input = false;
     while i < args.len() {
+        if get_input {
+            input = &args[i];
+        }
         if args[i] == "-r" || args[i] == "--rot" {
             program = "rot";
+            get_input = true;
         }
         i += 1;
     }
 
     if program == "rot" {
         for i in 0..26 {
-            rot(i);
+            rot(i, input.to_string());
         }
     } else {
         println!("No valid program selected");
     }
 }
 
-fn rot(rot_nro: u32) {
-    let input = "HelloThere";
+fn rot(rot_nro: u32, program_input: String) {
+    let mut input = "HelloThere";
+    if program_input != "" {
+        input = &program_input;
+    }
     let mut output_string: Vec<String> = vec![];
 
     for c in input.chars() {
