@@ -44,6 +44,6 @@ fn main() {
     if program == "rot" {
         run_rot(&input);
     } else if program == "base" {
-        run_base();
+        run_base(&input);
     }
 }
