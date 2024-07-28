@@ -1,4 +1,16 @@
-pub fn rot(rot_nro: u32, program_input: String) {
+pub fn run_rot(input: &Option<String>) {
+    if let Some(ref input_string) = input {
+        for i in 0..26 {
+            rot(i, input_string.to_string());
+        }
+    } else {
+        for i in 0..26 {
+            rot(i, "".to_string());
+        }
+    }
+}
+
+fn rot(rot_nro: u32, program_input: String) {
     let input = if program_input.is_empty() {
         "HelloThere"
     } else {

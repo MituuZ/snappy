@@ -3,6 +3,8 @@ mod rot;
 use std::env;
 use std::fs;
 
+use rot::run_rot;
+
 fn main() {
     let args: Vec<String> = env::args().collect();
     let mut program = "None";
@@ -30,18 +32,14 @@ fn main() {
             program = "rot";
             get_input = true;
         }
+        if args[i] == "-b" || args[i] == "--base" {
+            program = "base";
+            get_input = true;
+        }
         i += 1;
     }
 
     if program == "rot" {
-        if let Some(ref input_string) = input {
-            for i in 0..26 {
-                rot::rot(i, input_string.to_string());
-            }
-        } else {
-            for i in 0..26 {
-                rot::rot(i, "".to_string());
-            }
-        }
+        run_rot(&input);
     }
 }
