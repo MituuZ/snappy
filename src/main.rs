@@ -3,6 +3,9 @@ mod rot;
 
 use std::env;
 use std::fs;
+use std::io;
+use std::io::stdin;
+use std::io::BufRead;
 
 use base::run_base;
 use rot::run_rot;
@@ -39,6 +42,15 @@ fn main() {
             get_input = true;
         }
         i += 1;
+    }
+
+    if input.is_none() {
+        let stdin = io::stdin();
+        let mut res: Vec<String> = vec![];
+        for line in stdin.lock().lines() {
+            res.push(line.unwrap());
+        }
+        input = Some(res.join(""));
     }
 
     if program == "rot" {

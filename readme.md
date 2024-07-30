@@ -10,5 +10,8 @@ cargo run -- -r 'I say jump, you say how high'
 
 # File
 cargo run -- -r -f text.txt
+
+# stdin
+echo 'Hello World' | cargo run -- -r
 ```
 
