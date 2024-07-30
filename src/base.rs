@@ -17,18 +17,15 @@ fn base(input: String) -> String {
         let formatted = format!("{code:08b}");
         raw_binary.push(formatted.clone());
     }
-    println!("source: {}", input);
 
     let mut i = 0;
     while raw_binary.join("").len() % 6 != 0 {
-        println!("len: {}", raw_binary.len());
         raw_binary.push('0'.to_string());
         if i == 25 {
             panic!("Misaligned binary data");
         }
         i += 1;
     }
-    println!("padded target: {}", raw_binary.join(""));
 
     let joined_binary = raw_binary.join("");
     let mut chunks: Vec<String> = vec![];
@@ -41,7 +38,6 @@ fn base(input: String) -> String {
         chunks.push(chunk);
         start += chunk_size;
     }
-    println!("{}", &chunks.join(""));
     return process_chunks(&chunks);
 }
 
@@ -49,6 +45,9 @@ fn process_chunks(chunks: &Vec<String>) -> String {
     let mut result: Vec<String> = vec![];
     for chunk in chunks {
         result.push(get_ascii(&chunk));
+    }
+    while result.join("").len() % 4 != 0 {
+        result.push("=".to_string());
     }
     return result.join("");
 }
