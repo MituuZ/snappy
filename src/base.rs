@@ -1,3 +1,4 @@
+use crate::util::substring_with_padding;
 use core::panic;
 
 pub fn run_base(input: &Option<String>) {
@@ -29,10 +30,9 @@ fn base(input: String) -> String {
     let mut chunks: Vec<String> = vec![];
     let mut start = 0;
     let chunk_size = 6;
-    let chars: Vec<char> = joined_binary.chars().collect();
 
     while start < joined_binary.len() {
-        let chunk = substring(&chars, start, start + chunk_size);
+        let chunk = substring_with_padding(&joined_binary, start, start + chunk_size);
         chunks.push(chunk);
         start += chunk_size;
     }
@@ -62,19 +62,6 @@ fn get_ascii(binary: &str) -> String {
             panic!("Failed to convert binary to ASCII");
         }
     }
-}
-
-fn substring(chars: &Vec<char>, start: usize, end: usize) -> String {
-    let mut result: Vec<char> = vec![];
-    for i in start..end {
-        if i >= chars.len() {
-            result.push('0');
-        } else {
-            result.push(chars[i]);
-        }
-    }
-    // Dude, what the hell is this
-    return result.iter().cloned().collect::<String>();
 }
 
 #[test]

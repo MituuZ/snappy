@@ -1,5 +1,6 @@
 mod base;
 mod rot;
+mod util;
 
 use std::env;
 use std::fs;
