@@ -1,7 +1,5 @@
 use core::panic;
 
-static BASE64_CHARS: &str = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
-
 pub fn run_base(input: &Option<String>) {
     if let Some(ref input_string) = input {
         println!("{}", base(input_string.to_string()));
@@ -53,6 +51,8 @@ fn process_chunks(chunks: &Vec<String>) -> String {
 }
 
 fn get_ascii(binary: &str) -> String {
+    const BASE64_CHARS: &str = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+
     match u8::from_str_radix(binary, 2) {
         Ok(num) => match BASE64_CHARS.chars().nth(num as usize) {
             Some(val) => val.to_string(),
@@ -75,4 +75,10 @@ fn substring(chars: &Vec<char>, start: usize, end: usize) -> String {
     }
     // Dude, what the hell is this
     return result.iter().cloned().collect::<String>();
+}
+
+#[test]
+fn base_tests() {
+    assert_eq!("UGFuY2FrZQ==", base("Pancake".to_string()));
+    assert_eq!("SGVsbG8gV29ybGQ=", base("Hello World".to_string()));
 }
