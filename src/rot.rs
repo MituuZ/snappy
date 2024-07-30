@@ -53,7 +53,7 @@ fn get_next_ascii_code(original_code: u32, rot_nro: u32) -> u32 {
 }
 
 #[test]
-fn rot_13() {
+fn rot_tests() {
     assert_eq!("Hello World", rot(0, "Hello World".to_string()));
     assert_eq!("Olssv Dvysk", rot(7, "Hello World".to_string()));
     assert_eq!("Xubbe Mehbt", rot(16, "Hello World".to_string()));

@@ -4,7 +4,6 @@ mod rot;
 use std::env;
 use std::fs;
 use std::io;
-use std::io::stdin;
 use std::io::BufRead;
 
 use base::run_base;

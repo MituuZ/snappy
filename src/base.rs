@@ -1,14 +1,16 @@
 use core::panic;
 
+static BASE64_CHARS: &str = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+
 pub fn run_base(input: &Option<String>) {
     if let Some(ref input_string) = input {
-        base(input_string.to_string());
+        println!("{}", base(input_string.to_string()));
     } else {
         base("".to_string());
     }
 }
 
-fn base(input: String) {
+fn base(input: String) -> String {
     let mut raw_binary: Vec<String> = vec![];
     for c in input.chars() {
         let code = c as u32;
@@ -16,7 +18,6 @@ fn base(input: String) {
         raw_binary.push(formatted.clone());
     }
     println!("source: {}", input);
-    println!("target: {}", raw_binary.join(""));
 
     let mut i = 0;
     while raw_binary.len() % 3 != 0 {
@@ -41,9 +42,27 @@ fn base(input: String) {
         chunks.push(chunk);
         start += chunk_size;
     }
+    return process_chunks(&chunks);
+}
 
+fn process_chunks(chunks: &Vec<String>) -> String {
+    let mut result: Vec<String> = vec![];
     for chunk in chunks {
-        println!("Chunk: {}", chunk);
+        result.push(get_ascii(&chunk));
+    }
+    return result.join("");
+}
+
+fn get_ascii(binary: &String) -> String {
+    let num = u8::from_str_radix(binary, 2);
+    if num.is_ok() {
+        let val = BASE64_CHARS.chars().nth(num.unwrap().into());
+        if val.is_some() {
+            return val.unwrap().to_string();
+        }
+        return "".to_string();
+    } else {
+        panic!("Failed to convert binary to ASCII");
     }
 }
 
