@@ -34,9 +34,10 @@ fn base(input: String) {
     let mut chunks: Vec<String> = vec![];
     let mut start = 0;
     let chunk_size = 6;
+    let chars: Vec<char> = joined_binary.chars().collect();
 
     while start < joined_binary.len() {
-        let chunk = substring(joined_binary.clone(), start, start + chunk_size);
+        let chunk = substring(&chars, start, start + chunk_size);
         chunks.push(chunk);
         start += chunk_size;
     }
@@ -46,9 +47,7 @@ fn base(input: String) {
     }
 }
 
-/// This is gonna slow af
-fn substring(input_string: String, start: usize, end: usize) -> String {
-    let chars: Vec<char> = input_string.chars().collect();
+fn substring(chars: &Vec<char>, start: usize, end: usize) -> String {
     let mut result: Vec<char> = vec![];
     for i in start..end {
         result.push(chars[i]);
