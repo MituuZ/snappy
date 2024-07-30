@@ -10,7 +10,7 @@ pub fn run_rot(input: &Option<String>) {
     }
 }
 
-fn rot(rot_nro: u32, program_input: String) {
+fn rot(rot_nro: u32, program_input: String) -> String {
     let input = if program_input.is_empty() {
         "HelloThere"
     } else {
@@ -33,6 +33,7 @@ fn rot(rot_nro: u32, program_input: String) {
         }
     }
     println!("Output with rot {}: {}", rot_nro, output_string.join(""));
+    return output_string.join("");
 }
 
 fn get_next_ascii_code(original_code: u32, rot_nro: u32) -> u32 {
@@ -49,4 +50,12 @@ fn get_next_ascii_code(original_code: u32, rot_nro: u32) -> u32 {
         return new_code;
     }
     return original_code;
+}
+
+#[test]
+fn rot_13() {
+    assert_eq!("Hello World", rot(0, "Hello World".to_string()));
+    assert_eq!("Olssv Dvysk", rot(7, "Hello World".to_string()));
+    assert_eq!("Xubbe Mehbt", rot(16, "Hello World".to_string()));
+    assert_eq!("Hello World", rot(26, "Hello World".to_string()));
 }
