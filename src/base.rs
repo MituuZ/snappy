@@ -20,11 +20,10 @@ fn base(input: String) -> String {
     println!("source: {}", input);
 
     let mut i = 0;
-    while raw_binary.len() % 3 != 0 {
-        let code = '=' as u32;
-        let filler = format!("{code:08b}");
-        raw_binary.push(filler.clone());
-        if i == 5 {
+    while raw_binary.join("").len() % 6 != 0 {
+        println!("len: {}", raw_binary.len());
+        raw_binary.push('0'.to_string());
+        if i == 25 {
             panic!("Misaligned binary data");
         }
         i += 1;
@@ -42,13 +41,13 @@ fn base(input: String) -> String {
         chunks.push(chunk);
         start += chunk_size;
     }
+    println!("{}", &chunks.join(""));
     return process_chunks(&chunks);
 }
 
 fn process_chunks(chunks: &Vec<String>) -> String {
     let mut result: Vec<String> = vec![];
     for chunk in chunks {
-        println!("{}", &chunk);
         result.push(get_ascii(&chunk));
     }
     return result.join("");
@@ -69,7 +68,11 @@ fn get_ascii(binary: &str) -> String {
 fn substring(chars: &Vec<char>, start: usize, end: usize) -> String {
     let mut result: Vec<char> = vec![];
     for i in start..end {
-        result.push(chars[i]);
+        if i >= chars.len() {
+            result.push('0');
+        } else {
+            result.push(chars[i]);
+        }
     }
     // Dude, what the hell is this
     return result.iter().cloned().collect::<String>();
