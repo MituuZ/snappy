@@ -31,4 +31,28 @@ fn base(input: String) {
     println!("padded target: {}", raw_binary.join(""));
 
     let joined_binary = raw_binary.join("");
+    let mut chunks: Vec<String> = vec![];
+    let mut start = 0;
+    let chunk_size = 6;
+
+    while start < joined_binary.len() {
+        let chunk = substring(joined_binary.clone(), start, start + chunk_size);
+        chunks.push(chunk);
+        start += chunk_size;
+    }
+
+    for chunk in chunks {
+        println!("Chunk: {}", chunk);
+    }
+}
+
+/// This is gonna slow af
+fn substring(input_string: String, start: usize, end: usize) -> String {
+    let chars: Vec<char> = input_string.chars().collect();
+    let mut result: Vec<char> = vec![];
+    for i in start..end {
+        result.push(chars[i]);
+    }
+    // Dude, what the hell is this
+    return result.iter().cloned().collect::<String>();
 }
