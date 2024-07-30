@@ -14,7 +14,7 @@ fn base(input: String) -> String {
     let mut raw_binary: Vec<String> = vec![];
     for c in input.chars() {
         let code = c as u32;
-        let formatted = format!("{code:b}");
+        let formatted = format!("{code:08b}");
         raw_binary.push(formatted.clone());
     }
     println!("source: {}", input);
@@ -22,7 +22,7 @@ fn base(input: String) -> String {
     let mut i = 0;
     while raw_binary.len() % 3 != 0 {
         let code = '=' as u32;
-        let filler = format!("{code:b}");
+        let filler = format!("{code:08b}");
         raw_binary.push(filler.clone());
         if i == 5 {
             panic!("Misaligned binary data");
@@ -48,21 +48,21 @@ fn base(input: String) -> String {
 fn process_chunks(chunks: &Vec<String>) -> String {
     let mut result: Vec<String> = vec![];
     for chunk in chunks {
+        println!("{}", &chunk);
         result.push(get_ascii(&chunk));
     }
     return result.join("");
 }
 
-fn get_ascii(binary: &String) -> String {
-    let num = u8::from_str_radix(binary, 2);
-    if num.is_ok() {
-        let val = BASE64_CHARS.chars().nth(num.unwrap().into());
-        if val.is_some() {
-            return val.unwrap().to_string();
+fn get_ascii(binary: &str) -> String {
+    match u8::from_str_radix(binary, 2) {
+        Ok(num) => match BASE64_CHARS.chars().nth(num as usize) {
+            Some(val) => val.to_string(),
+            None => String::new(),
+        },
+        Err(_) => {
+            panic!("Failed to convert binary to ASCII");
         }
-        return "".to_string();
-    } else {
-        panic!("Failed to convert binary to ASCII");
     }
 }
 
