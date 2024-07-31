@@ -6,7 +6,7 @@ pub fn run_base(input: &Option<String>, coding_type: CodingType) {
     match coding_type {
         CodingType::ENCODE => {
             if let Some(ref input_string) = input {
-                println!("{}", base64_encode(input_string.to_string()));
+                println!("{}", base64_encode(input_string));
             } else {
                 panic!("No input provided for encoding");
             }
@@ -15,7 +15,7 @@ pub fn run_base(input: &Option<String>, coding_type: CodingType) {
     }
 }
 
-fn base64_encode(input: String) -> String {
+fn base64_encode(input: &str) -> String {
     let mut raw_binary: Vec<String> = vec![];
     for c in input.chars() {
         let code = c as u32;
@@ -72,6 +72,6 @@ fn get_ascii(binary: &str) -> String {
 
 #[test]
 fn base_tests() {
-    assert_eq!("UGFuY2FrZQ==", base64_encode("Pancake".to_string()));
-    assert_eq!("SGVsbG8gV29ybGQ=", base64_encode("Hello World".to_string()));
+    assert_eq!("UGFuY2FrZQ==", base64_encode("Pancake"));
+    assert_eq!("SGVsbG8gV29ybGQ=", base64_encode("Hello World"));
 }
