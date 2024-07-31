@@ -1,15 +1,21 @@
-use crate::util::substring_with_padding;
+use crate::util;
+use crate::util::CodingType;
 use core::panic;
 
-pub fn run_base(input: &Option<String>) {
-    if let Some(ref input_string) = input {
-        println!("{}", base(input_string.to_string()));
-    } else {
-        base("".to_string());
+pub fn run_base(input: &Option<String>, coding_type: CodingType) {
+    match coding_type {
+        CodingType::ENCODE => {
+            if let Some(ref input_string) = input {
+                println!("{}", base64_encode(input_string.to_string()));
+            } else {
+                panic!("No input provided for encoding");
+            }
+        }
+        CodingType::DECODE => {}
     }
 }
 
-fn base(input: String) -> String {
+fn base64_encode(input: String) -> String {
     let mut raw_binary: Vec<String> = vec![];
     for c in input.chars() {
         let code = c as u32;
@@ -32,7 +38,7 @@ fn base(input: String) -> String {
     let chunk_size = 6;
 
     while start < joined_binary.len() {
-        let chunk = substring_with_padding(&joined_binary, start, start + chunk_size);
+        let chunk = util::substring_with_padding(&joined_binary, start, start + chunk_size);
         chunks.push(chunk);
         start += chunk_size;
     }
@@ -66,6 +72,6 @@ fn get_ascii(binary: &str) -> String {
 
 #[test]
 fn base_tests() {
-    assert_eq!("UGFuY2FrZQ==", base("Pancake".to_string()));
-    assert_eq!("SGVsbG8gV29ybGQ=", base("Hello World".to_string()));
+    assert_eq!("UGFuY2FrZQ==", base64_encode("Pancake".to_string()));
+    assert_eq!("SGVsbG8gV29ybGQ=", base64_encode("Hello World".to_string()));
 }

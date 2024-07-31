@@ -15,6 +15,11 @@ pub fn substring_with_padding(source: &String, start: usize, end: usize) -> Stri
     return result.iter().cloned().collect::<String>();
 }
 
+pub enum CodingType {
+    ENCODE,
+    DECODE,
+}
+
 #[test]
 fn base_substring() {
     assert_eq!("asd", substring_with_padding(&"asdf".to_string(), 0, 3));

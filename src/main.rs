@@ -37,8 +37,12 @@ fn main() {
             program = "rot";
             get_input = true;
         }
-        if args[i] == "-b" || args[i] == "--base" {
-            program = "base";
+        if args[i] == "-be" || args[i] == "--base-encode" {
+            program = "base-encode";
+            get_input = true;
+        }
+        if args[i] == "-bd" || args[i] == "--base-decode" {
+            program = "base-decode";
             get_input = true;
         }
         i += 1;
@@ -55,7 +59,9 @@ fn main() {
 
     if program == "rot" {
         run_rot(&input);
-    } else if program == "base" {
-        run_base(&input);
+    } else if program == "base-encode" {
+        run_base(&input, util::CodingType::ENCODE);
+    } else if program == "base-decode" {
+        run_base(&input, util::CodingType::DECODE);
     }
 }
