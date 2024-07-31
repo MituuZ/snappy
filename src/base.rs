@@ -27,16 +27,15 @@ fn base64_decode(input: &str) -> String {
         owned_string = substring_with_padding(&owned_string, 0, owned_string.len() - 1);
     }
     println!("Padding removed from string: {}", owned_string);
+
+    let raw_binary: Vec<String> = get_binary_string(&owned_string, 6);
+    println!("Raw binary string: {}", raw_binary.join(""));
+
     return "".to_string();
 }
 
 fn base64_encode(input: &str) -> String {
-    let mut raw_binary: Vec<String> = vec![];
-    for c in input.chars() {
-        let code = c as u32;
-        let formatted = format!("{code:08b}");
-        raw_binary.push(formatted.clone());
-    }
+    let mut raw_binary: Vec<String> = get_binary_string(input, 8);
 
     let mut i = 0;
     while raw_binary.join("").len() % 6 != 0 {
@@ -58,6 +57,21 @@ fn base64_encode(input: &str) -> String {
         start += chunk_size;
     }
     return process_chunks(&chunks);
+}
+
+fn get_binary_string(input: &str, size: usize) -> Vec<String> {
+    let mut raw_binary: Vec<String> = vec![];
+
+    for c in input.chars() {
+        let code = c as u32;
+        let formatted = match size {
+            8 => format!("{code:08b}"),
+            6 => format!("{code:06b}"),
+            _ => panic!("Unrecognized binary formatter"),
+        };
+        raw_binary.push(formatted.clone());
+    }
+    return raw_binary;
 }
 
 fn process_chunks(chunks: &Vec<String>) -> String {
