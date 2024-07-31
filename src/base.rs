@@ -1,5 +1,5 @@
-use crate::util;
 use crate::util::CodingType;
+use crate::util::{self, substring_with_padding};
 use core::panic;
 
 pub fn run_base(input: &Option<String>, coding_type: CodingType) {
@@ -11,8 +11,23 @@ pub fn run_base(input: &Option<String>, coding_type: CodingType) {
                 panic!("No input provided for encoding");
             }
         }
-        CodingType::DECODE => {}
+        CodingType::DECODE => {
+            if let Some(ref input_string) = input {
+                println!("{}", base64_decode(input_string));
+            } else {
+                panic!("No input provided for decoding");
+            }
+        }
     }
+}
+
+fn base64_decode(input: &str) -> String {
+    let mut owned_string: String = input.to_string();
+    while owned_string.chars().last() == Some('=') {
+        owned_string = substring_with_padding(&owned_string, 0, owned_string.len() - 1);
+    }
+    println!("Padding removed from string: {}", owned_string);
+    return "".to_string();
 }
 
 fn base64_encode(input: &str) -> String {
