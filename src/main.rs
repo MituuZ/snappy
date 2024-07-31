@@ -12,7 +12,7 @@ use rot::run_rot;
 
 fn main() {
     let args: Vec<String> = env::args().collect();
-    let mut program = "None";
+    let mut program: ProgramType = ProgramType::NONE;
     let mut input: Option<String> = None;
 
     let mut i = 0;
@@ -34,15 +34,15 @@ fn main() {
             }
         }
         if args[i] == "-r" || args[i] == "--rot" {
-            program = "rot";
+            program = ProgramType::ROT;
             get_input = true;
         }
         if args[i] == "-be" || args[i] == "--base-encode" {
-            program = "base-encode";
+            program = ProgramType::Base64Encode;
             get_input = true;
         }
         if args[i] == "-bd" || args[i] == "--base-decode" {
-            program = "base-decode";
+            program = ProgramType::Base64Decode;
             get_input = true;
         }
         i += 1;
@@ -57,11 +57,17 @@ fn main() {
         input = Some(res.join(""));
     }
 
-    if program == "rot" {
-        run_rot(&input);
-    } else if program == "base-encode" {
-        run_base(&input, util::CodingType::ENCODE);
-    } else if program == "base-decode" {
-        run_base(&input, util::CodingType::DECODE);
+    match program {
+        ProgramType::ROT => run_rot(&input),
+        ProgramType::Base64Encode => run_base(&input, util::CodingType::ENCODE),
+        ProgramType::Base64Decode => run_base(&input, util::CodingType::DECODE),
+        ProgramType::NONE => println!("No mode selected"),
     }
+}
+
+enum ProgramType {
+    ROT,
+    Base64Encode,
+    Base64Decode,
+    NONE,
 }
