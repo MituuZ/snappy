@@ -46,17 +46,20 @@ fn base64_encode(input: &str) -> String {
         i += 1;
     }
 
-    let joined_binary = raw_binary.join("");
+    let chunks: Vec<String> = create_chunks(&raw_binary.join(""), 6);
+    return process_chunks(&chunks);
+}
+
+fn create_chunks(binary_string: &String, size: usize) -> Vec<String> {
     let mut chunks: Vec<String> = vec![];
     let mut start = 0;
-    let chunk_size = 6;
 
-    while start < joined_binary.len() {
-        let chunk = util::substring_with_padding(&joined_binary, start, start + chunk_size);
+    while start < binary_string.len() {
+        let chunk = util::substring_with_padding(&binary_string, start, start + size);
         chunks.push(chunk);
-        start += chunk_size;
+        start += size;
     }
-    return process_chunks(&chunks);
+    return chunks;
 }
 
 fn get_binary_string(input: &str, size: usize) -> Vec<String> {
