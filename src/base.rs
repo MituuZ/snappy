@@ -141,8 +141,8 @@ fn base64_encode_tests() {
     assert_eq!("UGFuY2FrZQ==", base64_encode("Pancake"));
     assert_eq!("SGVsbG8gV29ybGQ=", base64_encode("Hello World"));
     assert_eq!(
-        "U29tZSBib2R5IG9uY2UgdG9sZCBtZSwgdGhlIHdvcmxkIGlzIGdvbm5hIHJvbGwgbWU=",
-        base64_encode("Some body once told me, the world is gonna roll me")
+        "U29tZWJvZHkgb25jZSB0b2xkIG1lLCB0aGUgd29ybGQgaXMgZ29ubmEgcm9sbCBtZQ==",
+        base64_encode("Somebody once told me, the world is gonna roll me")
     );
 }
 
@@ -151,7 +151,7 @@ fn base64_decode_tests() {
     assert_eq!("Pancake", base64_decode("UGFuY2FrZQ=="));
     assert_eq!("Hello World", base64_decode("SGVsbG8gV29ybGQ="));
     assert_eq!(
-        "Some body once told me, the world is gonna roll me",
-        base64_decode("U29tZSBib2R5IG9uY2UgdG9sZCBtZSwgdGhlIHdvcmxkIGlzIGdvbm5hIHJvbGwgbWU=")
+        "Somebody once told me, the world is gonna roll me",
+        base64_decode("U29tZWJvZHkgb25jZSB0b2xkIG1lLCB0aGUgd29ybGQgaXMgZ29ubmEgcm9sbCBtZQ==")
     );
 }
