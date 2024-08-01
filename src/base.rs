@@ -48,7 +48,9 @@ fn base64_decode(input: &str) -> String {
             Some(val) => val,
             _ => panic!("Failed to convert binary to a number"),
         };
-        result.push(new_char.to_string());
+        if chunk != "00000000" {
+            result.push(new_char.to_string());
+        };
         println!("Chunk b: {}, val: {}, char: {}", chunk, asd, new_char);
     }
 
@@ -103,9 +105,7 @@ fn get_binary_from_ascii(input: &str) -> Vec<String> {
 
     for ascii_char in input.chars() {
         match BASE64_CHARS.find(ascii_char) {
-            Some(val) => {
-                raw_binary.push(format!("{val:06b}"));
-            }
+            Some(val) => raw_binary.push(format!("{val:06b}")),
             _ => panic!("No ascii rep found for char"),
         };
     }
@@ -140,4 +140,6 @@ fn get_ascii(binary: &str) -> String {
 fn base_tests() {
     assert_eq!("UGFuY2FrZQ==", base64_encode("Pancake"));
     assert_eq!("SGVsbG8gV29ybGQ=", base64_encode("Hello World"));
+    assert_eq!("Pancake", base64_decode("UGFuY2FrZQ=="));
+    assert_eq!("Hello World", base64_decode("SGVsbG8gV29ybGQ="));
 }
