@@ -1,6 +1,9 @@
 use crate::util::CodingType;
 use crate::util::{self, substring_with_padding};
 use core::panic;
+use std::char;
+
+static BASE64_CHARS: &str = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 
 pub fn run_base(input: &Option<String>, coding_type: CodingType) {
     match coding_type {
@@ -28,10 +31,28 @@ fn base64_decode(input: &str) -> String {
     }
     println!("Padding removed from string: {}", owned_string);
 
-    let raw_binary: Vec<String> = get_binary_string(&owned_string, 6);
+    let raw_binary: Vec<String> = get_binary_from_ascii(&owned_string);
     println!("Raw binary string: {}", raw_binary.join(""));
 
-    return "".to_string();
+    let mut result: Vec<String> = vec![];
+    let chunks: Vec<String> = create_chunks(&raw_binary.join(""), 8);
+    for chunk in chunks {
+        if chunk.len() != 8 {
+            continue;
+        }
+        let asd = match u8::from_str_radix(&chunk, 2) {
+            Ok(val) => val,
+            _ => panic!("Failed to convert binary to a number"),
+        };
+        let new_char = match char::from_u32(asd as u32) {
+            Some(val) => val,
+            _ => panic!("Failed to convert binary to a number"),
+        };
+        result.push(new_char.to_string());
+        println!("Chunk b: {}, val: {}, char: {}", chunk, asd, new_char);
+    }
+
+    return result.join("");
 }
 
 fn base64_encode(input: &str) -> String {
@@ -77,6 +98,21 @@ fn get_binary_string(input: &str, size: usize) -> Vec<String> {
     return raw_binary;
 }
 
+fn get_binary_from_ascii(input: &str) -> Vec<String> {
+    let mut raw_binary: Vec<String> = vec![];
+
+    for ascii_char in input.chars() {
+        match BASE64_CHARS.find(ascii_char) {
+            Some(val) => {
+                raw_binary.push(format!("{val:06b}"));
+            }
+            _ => panic!("No ascii rep found for char"),
+        };
+    }
+
+    return raw_binary;
+}
+
 fn process_chunks(chunks: &Vec<String>) -> String {
     let mut result: Vec<String> = vec![];
     for chunk in chunks {
@@ -89,8 +125,6 @@ fn process_chunks(chunks: &Vec<String>) -> String {
 }
 
 fn get_ascii(binary: &str) -> String {
-    const BASE64_CHARS: &str = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
-
     match u8::from_str_radix(binary, 2) {
         Ok(num) => match BASE64_CHARS.chars().nth(num as usize) {
             Some(val) => val.to_string(),
