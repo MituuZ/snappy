@@ -29,10 +29,7 @@ fn base64_decode(input: &str) -> String {
     while owned_string.chars().last() == Some('=') {
         owned_string = substring_with_padding(&owned_string, 0, owned_string.len() - 1);
     }
-    println!("Padding removed from string: {}", owned_string);
-
     let raw_binary: Vec<String> = get_binary_from_ascii(&owned_string);
-    println!("Raw binary string: {}", raw_binary.join(""));
 
     let mut result: Vec<String> = vec![];
     let chunks: Vec<String> = create_chunks(&raw_binary.join(""), 8);
@@ -51,7 +48,6 @@ fn base64_decode(input: &str) -> String {
         if chunk != "00000000" {
             result.push(new_char.to_string());
         };
-        println!("Chunk b: {}, val: {}, char: {}", chunk, asd, new_char);
     }
 
     return result.join("");
