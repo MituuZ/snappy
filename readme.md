@@ -25,6 +25,19 @@ ls -s $(pwd)/snappy /usr/local/bin/snappy # Or any other path that is in the pat
 ```
 
 ## Calling the program
+### From path
+```bash
+# String
+snappy -r 'I say jump, you say how high'
+
+# File
+snappy -r -f text.txt
+
+# stdin
+echo 'Hello World' | snappy -r
+```
+
+### From the repository root
 ```bash
 # String
 cargo run -- -r 'I say jump, you say how high'
