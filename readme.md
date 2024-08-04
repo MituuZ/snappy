@@ -1,6 +1,29 @@
 # Snappy
 Training tool for string and file manipulation used for picoCTF. Written in Rust by someone who doesn't yet know how to write Rust.
 
+## Creating executable
+To make calling the program easy, you should build the executable and have it in your path.
+This way you can call it from anywhere.
+
+Here's an example of building and creating a link to freely call the program.
+
+1. Clone the repository
+```bash
+git clone https://github.com/MituuZ/snappy.git
+```
+
+2. Build the executable
+```bash
+cd snappy
+cargo build --release
+```
+
+3. Create a link to bin (or any directory that is included in the path)
+```bash
+cd target/release
+ls -s $(pwd)/snappy /usr/local/bin/snappy # Or any other path that is in the path
+```
+
 ## Calling the program
 ```bash
 # String
