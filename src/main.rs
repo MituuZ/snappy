@@ -1,4 +1,5 @@
 mod base;
+mod new_caesar;
 mod rot;
 mod util;
 
@@ -33,17 +34,9 @@ fn main() {
                 input = Some(args[i].clone());
             }
         }
-        if args[i] == "-r" || args[i] == "--rot" {
-            program = ProgramType::ROT;
-            get_input = true;
-        }
-        if args[i] == "-be" || args[i] == "--base-encode" {
-            program = ProgramType::Base64Encode;
-            get_input = true;
-        }
-        if args[i] == "-bd" || args[i] == "--base-decode" {
-            program = ProgramType::Base64Decode;
-            get_input = true;
+
+        if program == ProgramType::NONE {
+            (program, get_input) = get_program_type(&args[i]);
         }
         i += 1;
     }
@@ -61,13 +54,25 @@ fn main() {
         ProgramType::ROT => run_rot(&input),
         ProgramType::Base64Encode => run_base(&input, util::CodingType::ENCODE),
         ProgramType::Base64Decode => run_base(&input, util::CodingType::DECODE),
+        ProgramType::NewCaesar => new_caesar::run(&input),
         ProgramType::NONE => println!("No mode selected"),
     }
 }
 
+fn get_program_type(arg: &String) -> (ProgramType, bool) {
+    return match arg.as_str() {
+        "-r" | "--rot" => (ProgramType::ROT, true),
+        "-be" | "--base-encode" => (ProgramType::Base64Encode, true),
+        "-bd" | "--base-decode" => (ProgramType::Base64Decode, true),
+        _ => (ProgramType::NONE, false),
+    };
+}
+
+#[derive(PartialEq)]
 enum ProgramType {
     ROT,
     Base64Encode,
     Base64Decode,
+    NewCaesar,
     NONE,
 }

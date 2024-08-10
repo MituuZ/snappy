@@ -37,15 +37,16 @@ fn rot(rot_nro: u32, program_input: String) -> String {
 }
 
 fn get_next_ascii_code(original_code: u32, rot_nro: u32) -> u32 {
+    let alphabet_size = 13;
     let new_code = original_code + rot_nro;
-    if original_code >= 65 && original_code <= 90 {
-        if new_code > 90 {
-            return new_code - 26;
+    if original_code >= 65 && original_code <= 65 + alphabet_size - 1 {
+        if new_code > 65 + alphabet_size - 1 {
+            return new_code - alphabet_size;
         }
         return new_code;
-    } else if original_code >= 97 && original_code <= 122 {
-        if new_code > 122 {
-            return new_code - 26;
+    } else if original_code >= 97 && original_code <= 97 + alphabet_size - 1 {
+        if new_code > 97 + alphabet_size - 1 {
+            return new_code - alphabet_size;
         }
         return new_code;
     }
