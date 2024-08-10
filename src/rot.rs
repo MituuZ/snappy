@@ -1,21 +1,10 @@
-pub fn run_rot(input: &Option<String>) {
-    if let Some(ref input_string) = input {
-        for i in 0..26 {
-            rot(i, input_string.to_string());
-        }
-    } else {
-        for i in 0..26 {
-            rot(i, "".to_string());
-        }
+pub fn run_rot(input: &String) {
+    for i in 0..26 {
+        rot(i, input);
     }
 }
 
-fn rot(rot_nro: u32, program_input: String) -> String {
-    let input = if program_input.is_empty() {
-        "HelloThere"
-    } else {
-        &program_input
-    };
+fn rot(rot_nro: u32, input: &String) -> String {
     let mut output_string: Vec<String> = vec![];
 
     for c in input.chars() {
@@ -37,7 +26,7 @@ fn rot(rot_nro: u32, program_input: String) -> String {
 }
 
 fn get_next_ascii_code(original_code: u32, rot_nro: u32) -> u32 {
-    let alphabet_size = 13;
+    let alphabet_size = 26;
     let new_code = original_code + rot_nro;
     if original_code >= 65 && original_code <= 65 + alphabet_size - 1 {
         if new_code > 65 + alphabet_size - 1 {
@@ -55,8 +44,8 @@ fn get_next_ascii_code(original_code: u32, rot_nro: u32) -> u32 {
 
 #[test]
 fn rot_tests() {
-    assert_eq!("Hello World", rot(0, "Hello World".to_string()));
-    assert_eq!("Olssv Dvysk", rot(7, "Hello World".to_string()));
-    assert_eq!("Xubbe Mehbt", rot(16, "Hello World".to_string()));
-    assert_eq!("Hello World", rot(26, "Hello World".to_string()));
+    assert_eq!("Hello World", rot(0, &"Hello World".to_string()));
+    assert_eq!("Olssv Dvysk", rot(7, &"Hello World".to_string()));
+    assert_eq!("Xubbe Mehbt", rot(16, &"Hello World".to_string()));
+    assert_eq!("Hello World", rot(26, &"Hello World".to_string()));
 }

@@ -1,6 +1,6 @@
 mod base;
-mod new_caesar;
 mod rot;
+mod string_shift;
 mod util;
 
 use std::env;
@@ -50,11 +50,16 @@ fn main() {
         input = Some(res.join(""));
     }
 
+    let input_string = match input {
+        Some(input) => input,
+        _ => panic!("No input provided"),
+    };
+
     match program {
-        ProgramType::ROT => run_rot(&input),
-        ProgramType::Base64Encode => run_base(&input, util::CodingType::ENCODE),
-        ProgramType::Base64Decode => run_base(&input, util::CodingType::DECODE),
-        ProgramType::NewCaesar => new_caesar::run(&input),
+        ProgramType::ROT => run_rot(&input_string),
+        ProgramType::Base64Encode => run_base(&input_string, util::CodingType::ENCODE),
+        ProgramType::Base64Decode => run_base(&input_string, util::CodingType::DECODE),
+        ProgramType::StringShift => string_shift::run(&input_string),
         ProgramType::NONE => println!("No mode selected"),
     }
 }
@@ -64,6 +69,7 @@ fn get_program_type(arg: &String) -> (ProgramType, bool) {
         "-r" | "--rot" => (ProgramType::ROT, true),
         "-be" | "--base-encode" => (ProgramType::Base64Encode, true),
         "-bd" | "--base-decode" => (ProgramType::Base64Decode, true),
+        "--string-shift" => (ProgramType::StringShift, true),
         _ => (ProgramType::NONE, false),
     };
 }
@@ -73,6 +79,6 @@ enum ProgramType {
     ROT,
     Base64Encode,
     Base64Decode,
-    NewCaesar,
+    StringShift,
     NONE,
 }

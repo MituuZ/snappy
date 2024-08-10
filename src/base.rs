@@ -5,21 +5,13 @@ use std::char;
 
 static BASE64_CHARS: &str = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 
-pub fn run_base(input: &Option<String>, coding_type: CodingType) {
+pub fn run_base(input: &String, coding_type: CodingType) {
     match coding_type {
         CodingType::ENCODE => {
-            if let Some(ref input_string) = input {
-                println!("{}", base64_encode(input_string));
-            } else {
-                panic!("No input provided for encoding");
-            }
+            println!("{}", base64_encode(input));
         }
         CodingType::DECODE => {
-            if let Some(ref input_string) = input {
-                println!("{}", base64_decode(input_string));
-            } else {
-                panic!("No input provided for decoding");
-            }
+            println!("{}", base64_decode(input));
         }
     }
 }
