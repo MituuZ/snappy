@@ -1,4 +1,4 @@
-/// Get the substring from a &String, also pads the string if the length is too short
+/// Get the substring from a &String, also pads the string with zeroes, if the length is too short
 /// Start is inclusive
 /// End is exclusive
 pub fn substring_with_padding(source: &String, start: usize, end: usize) -> String {
