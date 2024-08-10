@@ -4,7 +4,7 @@ pub fn run_rot(input: &String) {
     }
 }
 
-fn rot(rot_nro: u32, input: &String) -> String {
+pub fn rot(rot_nro: u32, input: &String) -> String {
     let mut output_string: Vec<String> = vec![];
 
     for c in input.chars() {
