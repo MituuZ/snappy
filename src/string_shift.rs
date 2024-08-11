@@ -7,7 +7,8 @@ static ALPHABET: &str = "abcdefghijklmnop";
 pub fn run(input: &String) {
     for i in 0..ALPHABET.len() {
         let input_string = shift_input(input, i);
-        run_shifts(&input_string);
+        println!("\nRunning shift with input: {input_string}");
+        run_shift(&input_string);
     }
 }
 
@@ -29,7 +30,7 @@ fn shift_input(input: &String, shift: usize) -> String {
     return res.join("");
 }
 
-fn run_shifts(input: &String) {
+fn run_shift(input: &String) {
     let mut res: Vec<String> = vec![];
     let mut i = 0;
     let mut two_chars = substring(input, i, 2);
