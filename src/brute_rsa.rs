@@ -1,18 +1,34 @@
 use core::panic;
+use num::bigint::BigUint;
 
 pub fn brute_force_rsa(input: &String) {
-    let cipher: String;
-    let n: String;
-    let e: String;
+    let cipher: BigUint;
+    let n: BigUint;
+    let e: BigUint;
 
     (cipher, n, e) = parse_file_contents(input);
 
     println!("cipher: {cipher}");
     println!("n: {n}");
     println!("e: {e}");
+
+    run_decrypt(cipher, n, e);
 }
 
-fn parse_file_contents(input: &String) -> (String, String, String) {
+fn run_decrypt(cipher: BigUint, n: BigUint, e: BigUint) {
+    if cipher < n {
+        println!("Running small e attack, because c < n");
+
+        let m = cipher.cbrt();
+        println!("{m}");
+        let messsage = String::from_utf8(m.to_bytes_be()).unwrap();
+        println!("{messsage}");
+    } else {
+        println!("Not implemented");
+    }
+}
+
+fn parse_file_contents(input: &String) -> (BigUint, BigUint, BigUint) {
     let mut cipher: String = "".to_string();
     let mut n: String = "".to_string();
     let mut e: String = "".to_string();
@@ -45,7 +61,11 @@ fn parse_file_contents(input: &String) -> (String, String, String) {
         panic!("No e provided");
     }
 
-    return (cipher, n, e);
+    return (
+        cipher.parse().unwrap(),
+        n.parse().unwrap(),
+        e.parse().unwrap(),
+    );
 }
 
 fn print_file_format() {
