@@ -1,6 +1,8 @@
 # Snappy
 Training tool for string and file manipulation used for picoCTF. Written in Rust by someone who doesn't yet know how to write Rust.
 
+Contains full answers to some challenges, so be warned. No extensive comments or documentation.
+
 ## Creating executable
 To make calling the program easy, you should build the executable and have it in your path.
 This way you can call it from anywhere.
