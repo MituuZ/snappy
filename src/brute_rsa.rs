@@ -21,7 +21,13 @@ fn run_decrypt(cipher: BigUint, n: BigUint, e: BigUint) {
 
         let m = cipher.cbrt();
         println!("{m}");
-        let messsage = String::from_utf8(m.to_bytes_be()).unwrap();
+
+        let bytes = m.to_bytes_be();
+
+        let messsage = match String::from_utf8(bytes) {
+            Ok(val) => val,
+            _ => "Couldn't transform utf8 to String".to_string(),
+        };
         println!("{messsage}");
     } else {
         println!("Not implemented");
