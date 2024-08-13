@@ -2,6 +2,7 @@ mod base;
 mod brute_rsa;
 mod rot;
 mod string_shift;
+mod substitution;
 mod util;
 
 use std::env;
@@ -63,6 +64,7 @@ fn main() {
         ProgramType::Base64Decode => run_base(&input_string, util::CodingType::DECODE),
         ProgramType::StringShift => string_shift::run(&input_string),
         ProgramType::BruteRsa => brute_force_rsa(&input_string),
+        ProgramType::Substitution => substitution::run_substitution(&input_string),
         ProgramType::NONE => println!("No mode selected"),
     }
 }
@@ -74,6 +76,7 @@ fn get_program_type(arg: &String) -> (ProgramType, bool) {
         "-bd" | "--base-decode" => (ProgramType::Base64Decode, true),
         "--string-shift" => (ProgramType::StringShift, true),
         "--brute-rsa" => (ProgramType::BruteRsa, true),
+        "--substitution" | "-s" => (ProgramType::Substitution, true),
         _ => (ProgramType::NONE, false),
     };
 }
@@ -85,5 +88,6 @@ enum ProgramType {
     Base64Decode,
     StringShift,
     BruteRsa,
+    Substitution,
     NONE,
 }
