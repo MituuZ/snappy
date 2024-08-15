@@ -1,9 +1,18 @@
 use core::panic;
 
+// This maps to the ABC table. e.g. original message char turns into the one below it
+static SUB: &str = "xhkyjlenqbowugmvidsfapcztrXHKYJLENQBOWUGMVIDSFAPCZTR";
 static ABC: &str = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-static SUB: &str = "gmlzjoxwtnisruvqpebkhfdcyaGMLZJOXWTNISRUVQAEBKHFDCYP";
+
+// Add chars here that are confirmed
+static CONFIRMED: &str = "picotfnem";
+
+// A list of of characters in the order of most common
+static FREQ: &str = "etaoinshrdlcumwfgypbvkjxqz";
 
 pub fn run_substitution(input: &String) {
+    get_frequencies(input);
+
     let mut res: Vec<String> = vec![];
     for c in input.chars() {
         let index = match SUB.find(c) {
@@ -20,14 +29,31 @@ pub fn run_substitution(input: &String) {
         };
         res.push(new_char.to_string());
     }
-    println!("{input}");
+    println!("Input:\n{input}");
     println!("\nResult:\n{}", res.join(""));
 
-    get_frequencies(input)
+    validate_sub();
+}
+
+fn validate_sub() {
+    let mut existing: Vec<char> = vec![];
+    for c in SUB.chars() {
+        if existing.contains(&c) {
+            println!("Found a duplicate char: {c} in sub");
+        } else {
+            existing.push(c);
+        }
+    }
+
+    for c in ABC.chars() {
+        if !existing.contains(&c) {
+            println!("Missing char: {c} from sub");
+        }
+    }
 }
 
 fn get_frequencies(input: &String) {
-    println!("\nCipher frequencies: ");
+    println!("\nCipher frequencies\tPossible char\tCurrent char\tConfirmed");
 
     let mut input_freq: Vec<(char, usize)> = vec![];
     for c in input.chars() {
@@ -37,12 +63,36 @@ fn get_frequencies(input: &String) {
     input_freq.sort_by(|a, b| b.1.cmp(&a.1));
     let length = input.len();
 
+    let mut i = 0;
     for (key, val) in input_freq {
         let freq: f32 = val as f32 / length as f32;
+        let freq_char = match FREQ.chars().nth(i) {
+            Some(val) => val,
+            _ => '*',
+        };
         if ABC.contains(key) {
-            println!("{key}: {freq}");
+            let current_match = get_current_match(&key);
+            let confirmed = if CONFIRMED.contains(current_match) {
+                "x"
+            } else {
+                ""
+            };
+            println!("{key}: {freq}\t\t{freq_char}\t\t{current_match}\t\t{confirmed}");
+            i += 1;
         }
     }
+}
+
+fn get_current_match(c: &char) -> char {
+    let index = match SUB.find(*c) {
+        Some(val) => val,
+        _ => panic!("Couldn't find match for char {c}"),
+    };
+
+    return match ABC.chars().nth(index) {
+        Some(val) => val,
+        _ => panic!("Couldn't find match for char {c}"),
+    };
 }
 
 fn increment_or_insert(input_freq: &mut Vec<(char, usize)>, c: char) {
