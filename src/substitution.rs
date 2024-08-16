@@ -1,13 +1,14 @@
 use core::panic;
 
-// This maps to the ABC table. e.g. original message char turns into the one below it
+// SUB maps to the ABC table
+// e.g. a character from the original message turns into the one below it
 static SUB: &str = "xhkyjlenqbowugmvidsfapcztrXHKYJLENQBOWUGMVIDSFAPCZTR";
 static ABC: &str = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
 // Add chars here that are confirmed
 static CONFIRMED: &str = "picotfnem";
 
-// A list of of characters in the order of most common
+// A list of characters in the order of most common first
 static FREQ: &str = "etaoinshrdlcumwfgypbvkjxqz";
 
 pub fn run_substitution(input: &String) {
@@ -35,6 +36,7 @@ pub fn run_substitution(input: &String) {
     validate_sub();
 }
 
+/// Checks if SUB contains duplicate characters and if all chars from ABC are present in SUB
 fn validate_sub() {
     let mut existing: Vec<char> = vec![];
     for c in SUB.chars() {
@@ -52,6 +54,8 @@ fn validate_sub() {
     }
 }
 
+/// Print out cipher character frequencies, suggestions based on the FREQ string, current selection
+/// and if a character pair has been confirmed
 fn get_frequencies(input: &String) {
     println!("\nCipher frequencies\tPossible char\tCurrent char\tConfirmed");
 
@@ -83,6 +87,7 @@ fn get_frequencies(input: &String) {
     }
 }
 
+/// Find character's index from SUB and return corresponding char from ABC
 fn get_current_match(c: &char) -> char {
     let index = match SUB.find(*c) {
         Some(val) => val,
@@ -95,6 +100,7 @@ fn get_current_match(c: &char) -> char {
     };
 }
 
+/// Either increment character count or add the character to input_freq vector
 fn increment_or_insert(input_freq: &mut Vec<(char, usize)>, c: char) {
     let lower = c.to_ascii_lowercase();
     for v in input_freq.iter_mut() {
