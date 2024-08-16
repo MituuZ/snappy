@@ -2,6 +2,8 @@ use core::panic;
 use num::bigint::BigUint;
 
 pub fn brute_force_rsa(input: &String) {
+    println!("Not implemented! In progess");
+
     let cipher: BigUint;
     let n: BigUint;
     let e: BigUint;

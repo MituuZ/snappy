@@ -4,6 +4,7 @@ use crate::util::substring;
 
 static ALPHABET: &str = "abcdefghijklmnop";
 
+/// A mix of base16 and rotation encoding. Solves a single picoCTF challenge
 pub fn run(input: &String) {
     for i in 0..ALPHABET.len() {
         let input_string = shift_input(input, i);

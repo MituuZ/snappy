@@ -1,4 +1,5 @@
 pub fn run_rot(input: &String) {
+    // Run all 26 rotations for the input
     for i in 0..26 {
         rot(i, input);
     }
@@ -25,6 +26,7 @@ pub fn rot(rot_nro: u32, input: &String) -> String {
     return output_string.join("");
 }
 
+// Get new char code for the character incremented by the rot_nro
 fn get_next_ascii_code(original_code: u32, rot_nro: u32) -> u32 {
     let alphabet_size = 26;
     let new_code = original_code + rot_nro;

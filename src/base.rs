@@ -3,6 +3,7 @@ use crate::util::{self, substring_with_padding};
 use core::panic;
 use std::char;
 
+// Base64 characters used to map between integers and characters
 static BASE64_CHARS: &str = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 
 pub fn run_base(input: &String, coding_type: CodingType) {
@@ -18,12 +19,18 @@ pub fn run_base(input: &String, coding_type: CodingType) {
 
 fn base64_decode(input: &str) -> String {
     let mut owned_string: String = input.to_string();
+
+    // Remove padding from an encoded string
     while owned_string.chars().last() == Some('=') {
         owned_string = substring_with_padding(&owned_string, 0, owned_string.len() - 1);
     }
+
+    // Get the raw binary representation of the input
     let raw_binary: Vec<String> = get_binary_from_ascii(&owned_string);
 
     let mut result: Vec<String> = vec![];
+
+    // Chunk the binary representation to chunks of eight and get the corresponding character
     let chunks: Vec<String> = create_chunks(&raw_binary.join(""), 8);
     for chunk in chunks {
         if chunk.len() != 8 {
@@ -46,9 +53,12 @@ fn base64_decode(input: &str) -> String {
 }
 
 fn base64_encode(input: &str) -> String {
+    // Get the raw binary representation of the input
     let mut raw_binary: Vec<String> = get_binary_string(input, 8);
 
     let mut i = 0;
+
+    // Pad the input until it is divisble by 6
     while raw_binary.join("").len() % 6 != 0 {
         raw_binary.push('0'.to_string());
         if i == 25 {
@@ -57,6 +67,7 @@ fn base64_encode(input: &str) -> String {
         i += 1;
     }
 
+    // Chunk the raw binary to chunks of six and process each chunk
     let chunks: Vec<String> = create_chunks(&raw_binary.join(""), 6);
     return process_chunks(&chunks);
 }
@@ -106,6 +117,8 @@ fn process_chunks(chunks: &Vec<String>) -> String {
     for chunk in chunks {
         result.push(get_ascii(&chunk));
     }
+
+    // Pad the result with equals sings until its length is divisble by four
     while result.join("").len() % 4 != 0 {
         result.push("=".to_string());
     }
