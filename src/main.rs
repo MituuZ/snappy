@@ -23,6 +23,7 @@ fn main() {
     let mut get_input = false;
     while i < args.len() {
         if get_input {
+            // Check if input is read from a file or use the next arg as input
             if args[i] == "-f" || args[i] == "--file" {
                 if let Some(file_path) = args.get(i + 1) {
                     match fs::read_to_string(file_path) {
@@ -44,6 +45,7 @@ fn main() {
         i += 1;
     }
 
+    // If no input was defined, read it from stdin
     if input.is_none() {
         let stdin = io::stdin();
         let mut res: Vec<String> = vec![];
@@ -69,6 +71,7 @@ fn main() {
     }
 }
 
+/// Match input arg to a program type
 fn get_program_type(arg: &String) -> (ProgramType, bool) {
     return match arg.as_str() {
         "-r" | "--rot" => (ProgramType::ROT, true),
