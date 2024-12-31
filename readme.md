@@ -1,5 +1,5 @@
 # Snappy
-Training tool for string and file manipulation used for picoCTF. Written in Rust by someone who doesn't yet know how to write Rust.
+Training tool for string and file manipulation used for picoCTF and learning Rust.
 
 Contains full answers to some challenges, so be warned. No extensive comments or documentation.
 
